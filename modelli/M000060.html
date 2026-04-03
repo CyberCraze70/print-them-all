@@ -87,12 +87,15 @@
   </div>
   <p id="pta-unlock-status-M000060" class="muted">Downloads are currently locked.</p>
 </div>
+  <p id="pta-unlock-status-M000060" class="muted">Downloads are currently locked.</p>
+</div>
   <p id="pta-unlock-status" class="muted">Downloads are currently locked.</p>
 </div>
 <div class="footer-note">
   Print Them All — static catalog ready for GitHub Pages.
 </div>
   </div>
+
 
 <script id="pta-unlock-script">
 const PTA_WORKER_BASE = "https://print-them-all-unlock.crypto-4ea.workers.dev";
@@ -136,7 +139,17 @@ function ptaUpdatePageButtons() {
   const allStatus = document.querySelectorAll("[id^='pta-unlock-status-']");
 
   for (const btn of allButtons) {
-    btn.disabled = !saved;
+    if (saved) {
+      btn.disabled = false;
+      btn.removeAttribute("disabled");
+      btn.style.opacity = "1";
+      btn.style.cursor = "pointer";
+    } else {
+      btn.disabled = true;
+      btn.setAttribute("disabled", "disabled");
+      btn.style.opacity = "0.45";
+      btn.style.cursor = "not-allowed";
+    }
   }
 
   for (const statusEl of allStatus) {
