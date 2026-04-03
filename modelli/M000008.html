@@ -82,145 +82,129 @@
   <h2>Downloads</h2>
   <p>This model page is public, but downloads are protected by your library key.</p>
   <div class="links-list">
-    <button class="pta-btn pta-unlock-btn" type="button">Unlock Downloads</button>
-    <button class="pta-btn pta-download-btn" type="button" disabled>Download ZIP</button>
+    <button class="pta-btn" type="button" onclick="ptaUnlockDownloads('M000008')">Unlock Downloads</button>
+    <button class="pta-btn" id="pta-download-btn-M000008" type="button" onclick="ptaDownloadZip('M000008')" disabled>Download ZIP</button>
   </div>
+  <p id="pta-unlock-status-M000008" class="muted">Downloads are currently locked.</p>
+</div>
   <p id="pta-unlock-status" class="muted">Downloads are currently locked.</p>
 </div>
 <div class="footer-note">
   Print Them All — static catalog ready for GitHub Pages.
 </div>
   </div>
+
 <script id="pta-unlock-script">
-(function() {
-  const PTA_MODEL_NAME = "M000008";
-  const PTA_WORKER_BASE = "https://print-them-all-unlock.crypto-4ea.workers.dev";
-  const PTA_STORAGE_KEY = "pta_library_access";
-  const PTA_VALID_DAYS = 30;
+const PTA_WORKER_BASE = "https://print-them-all-unlock.crypto-4ea.workers.dev";
+const PTA_STORAGE_KEY = "pta_library_access";
+const PTA_VALID_DAYS = 30;
 
-  function ptaGetButtons() {
-    return {
-      unlockBtn: document.querySelector(".pta-unlock-btn"),
-      downloadBtn: document.querySelector(".pta-download-btn"),
-      statusEl: document.getElementById("pta-unlock-status")
-    };
-  }
+function ptaGetSavedAccess() {
+  try {
+    const raw = localStorage.getItem(PTA_STORAGE_KEY);
+    if (!raw) return null;
 
-  function ptaGetSavedAccess() {
-    try {
-      const raw = localStorage.getItem(PTA_STORAGE_KEY);
-      if (!raw) return null;
+    const data = JSON.parse(raw);
+    if (!data.key || !data.expires_at) return null;
 
-      const data = JSON.parse(raw);
-      if (!data.key || !data.expires_at) return null;
-
-      if (Date.now() > Number(data.expires_at)) {
-        localStorage.removeItem(PTA_STORAGE_KEY);
-        return null;
-      }
-
-      return data;
-    } catch (err) {
+    if (Date.now() > Number(data.expires_at)) {
       localStorage.removeItem(PTA_STORAGE_KEY);
       return null;
     }
+
+    return data;
+  } catch (err) {
+    localStorage.removeItem(PTA_STORAGE_KEY);
+    return null;
+  }
+}
+
+function ptaSaveAccess(key) {
+  const expiresAt = Date.now() + (PTA_VALID_DAYS * 24 * 60 * 60 * 1000);
+  localStorage.setItem(
+    PTA_STORAGE_KEY,
+    JSON.stringify({
+      key: key,
+      expires_at: expiresAt
+    })
+  );
+}
+
+function ptaUpdatePageButtons() {
+  const saved = ptaGetSavedAccess();
+  const allButtons = document.querySelectorAll("[id^='pta-download-btn-']");
+  const allStatus = document.querySelectorAll("[id^='pta-unlock-status-']");
+
+  for (const btn of allButtons) {
+    btn.disabled = !saved;
   }
 
-  function ptaSaveAccess(key) {
-    const expiresAt = Date.now() + (PTA_VALID_DAYS * 24 * 60 * 60 * 1000);
-    localStorage.setItem(
-      PTA_STORAGE_KEY,
-      JSON.stringify({
-        key: key,
-        expires_at: expiresAt
-      })
-    );
-  }
-
-  function ptaUpdateUI() {
-    const saved = ptaGetSavedAccess();
-    const els = ptaGetButtons();
-    if (!els.downloadBtn || !els.statusEl || !els.unlockBtn) return;
-
+  for (const statusEl of allStatus) {
     if (saved) {
-      els.downloadBtn.disabled = false;
-      els.statusEl.textContent = "Downloads unlocked on this device.";
-      els.unlockBtn.textContent = "Change Library Key";
+      statusEl.textContent = "Downloads unlocked on this device.";
     } else {
-      els.downloadBtn.disabled = true;
-      els.statusEl.textContent = "Downloads are currently locked.";
-      els.unlockBtn.textContent = "Unlock Downloads";
+      statusEl.textContent = "Downloads are currently locked.";
     }
   }
+}
 
-  async function ptaUnlockDownloads() {
-    const saved = ptaGetSavedAccess();
-    const currentValue = saved ? saved.key : "";
-    const key = prompt("Enter your library key:", currentValue);
+async function ptaUnlockDownloads(modelName) {
+  const saved = ptaGetSavedAccess();
+  const currentValue = saved ? saved.key : "";
+  const key = prompt("Enter your library key:", currentValue);
 
-    if (key === null) return;
-    if (!key.trim()) {
-      alert("No key entered.");
-      return;
-    }
-
-    try {
-      const response = await fetch(PTA_WORKER_BASE + "/unlock", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ key: key.trim() })
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        ptaSaveAccess(key.trim());
-        ptaUpdateUI();
-        alert("Downloads unlocked.");
-      } else {
-        alert("Wrong key.");
-      }
-    } catch (err) {
-      alert("Cannot contact unlock service.");
-      console.error(err);
-    }
+  if (key === null) return;
+  if (!key.trim()) {
+    alert("No key entered.");
+    return;
   }
 
-  function ptaDownloadZip() {
-    const saved = ptaGetSavedAccess();
+  try {
+    const response = await fetch(PTA_WORKER_BASE + "/unlock", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ key: key.trim() })
+    });
 
-    if (!saved || !saved.key) {
-      alert("Please unlock downloads first.");
-      ptaUpdateUI();
-      return;
+    const data = await response.json();
+
+    if (data.success) {
+      ptaSaveAccess(key.trim());
+      ptaUpdatePageButtons();
+      alert("Downloads unlocked.");
+    } else {
+      alert("Wrong key.");
     }
+  } catch (err) {
+    alert("Cannot contact unlock service.");
+    console.error(err);
+  }
+}
 
-    const fileName = PTA_MODEL_NAME + ".zip";
-    const url = PTA_WORKER_BASE
-      + "/download?file="
-      + encodeURIComponent(fileName)
-      + "&key="
-      + encodeURIComponent(saved.key);
+function ptaDownloadZip(modelName) {
+  const saved = ptaGetSavedAccess();
 
-    window.location.href = url;
+  if (!saved || !saved.key) {
+    alert("Please unlock downloads first.");
+    ptaUpdatePageButtons();
+    return;
   }
 
-  document.addEventListener("DOMContentLoaded", function() {
-    ptaUpdateUI();
+  const fileName = modelName + ".zip";
+  const url = PTA_WORKER_BASE
+    + "/download?file="
+    + encodeURIComponent(fileName)
+    + "&key="
+    + encodeURIComponent(saved.key);
 
-    const els = ptaGetButtons();
+  window.location.href = url;
+}
 
-    if (els.unlockBtn) {
-      els.unlockBtn.addEventListener("click", ptaUnlockDownloads);
-    }
-
-    if (els.downloadBtn) {
-      els.downloadBtn.addEventListener("click", ptaDownloadZip);
-    }
-  });
-})();
+document.addEventListener("DOMContentLoaded", function() {
+  ptaUpdatePageButtons();
+});
 </script>
 </body>
 </html>
