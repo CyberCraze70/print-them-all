@@ -28,11 +28,17 @@
   <img src='../previews/M000013.png' alt='M000013' style='max-width:520px;width:100%;border:1px solid #ddd;border-radius:12px;background:#fff;'>
 </div>
 
+
 <div class="card">
-  <h2>Download</h2>
+  <h2>Downloads</h2>
+  <p>This model page is public, but downloads are protected by your library key.</p>
   <div class="links-list">
-    <a href='../downloads/M000013.zip'>Download ZIP</a>
+    <button id="unlockBtn" type="button" onclick="ptaUnlockDownloads()">Unlock Downloads</button>
+    <button id="downloadBtn" type="button" onclick="ptaDownloadZip()" disabled>Download ZIP</button>
   </div>
+  <p id="unlockStatus" class="muted">Downloads are currently locked.</p>
+</div>
+
 </div>
 
 <div class="card">
