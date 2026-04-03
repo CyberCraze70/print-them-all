@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>M000091 - Set screw UNI 5923 M14x60</title>
   <link rel="stylesheet" href="../assets/style.css">
+
 <style id="pta-unlock-style">
 .pta-btn{
   display:inline-block;
@@ -26,6 +27,7 @@
   cursor:not-allowed;
 }
 </style>
+
 </head>
 <body>
   <div class="container">
@@ -49,14 +51,6 @@
   <img src='../previews/M000091.png' alt='M000091' style='max-width:520px;width:100%;border:1px solid #ddd;border-radius:12px;background:#fff;'>
 </div>
 
-
-<div class="card">
-  <h2>Downloads</h2>
-  <p>This model page is public, but downloads are protected by your library key.</p>
-  <div class="links-list">
-    <button id="unlockBtn" type="button" onclick="ptaUnlockDownloads()">Unlock Downloads</button>
-    <button id="downloadBtn" type="button" onclick="ptaDownloadZip()" disabled>Download ZIP</button>
-  </div>
   <p id="unlockStatus" class="muted">Downloads are currently locked.</p>
 </div>
 
@@ -67,17 +61,15 @@
   <p>Set screw according to UNI 5923.</p>
 </div>
 
-
-<div class="card">
-  <h2>Downloads</h2>
-  <p>This model page is public, but downloads are protected by your library key.</p>
-  <div class="links-list">
-    <button id="unlockBtn" type="button" onclick="ptaUnlockDownloads()">Unlock Downloads</button>
-    <button id="downloadBtn" type="button" onclick="ptaDownloadZip()" disabled>Download ZIP</button>
-  </div>
   <p id="unlockStatus" class="muted">Downloads are currently locked.</p>
 </div>
 
+  <p id="pta-unlock-status-M000091" class="muted">Downloads are currently locked.</p>
+</div>
+  <p id="pta-unlock-status-M000091" class="muted">Downloads are currently locked.</p>
+</div>
+  <p id="pta-unlock-status" class="muted">Downloads are currently locked.</p>
+</div>
 <div class="card" id="pta-download-card">
   <h2>Downloads</h2>
   <p>This model page is public, but downloads are protected by your library key.</p>
@@ -87,15 +79,11 @@
   </div>
   <p id="pta-unlock-status-M000091" class="muted">Downloads are currently locked.</p>
 </div>
-  <p id="pta-unlock-status-M000091" class="muted">Downloads are currently locked.</p>
-</div>
-  <p id="pta-unlock-status" class="muted">Downloads are currently locked.</p>
-</div>
+
 <div class="footer-note">
   Print Them All — static catalog ready for GitHub Pages.
 </div>
   </div>
-
 
 <script id="pta-unlock-script">
 const PTA_WORKER_BASE = "https://print-them-all-unlock.crypto-4ea.workers.dev";
@@ -219,5 +207,6 @@ document.addEventListener("DOMContentLoaded", function() {
   ptaUpdatePageButtons();
 });
 </script>
+
 </body>
 </html>
