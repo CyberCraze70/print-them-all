@@ -58,10 +58,7 @@
   <h2>Notes</h2>
   <p>Angle bracket with slotted hole.</p>
 </div>
-</div>
-</div>
-</div>
-</div>
+
 <div class="card" id="pta-download-card">
   <h2>Downloads</h2>
   <p>This model page is public, but downloads are protected by your library key.</p>
@@ -69,6 +66,11 @@
     <button class="pta-btn" type="button" onclick="ptaUnlockDownloads('M000012')">Unlock Downloads</button>
     <button class="pta-btn" id="pta-download-btn-M000012" type="button" onclick="ptaDownloadZip('M000012')" disabled>Download ZIP</button>
   </div>
+  <p id="pta-unlock-status-M000012" class="muted">Downloads are currently locked.</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 <div class="footer-note">
@@ -133,11 +135,9 @@ function ptaUpdatePageButtons() {
 
   for (const statusEl of allStatus) {
     if (saved) {
-      statusEl.textContent = "
-";
+      statusEl.textContent = "Downloads unlocked on this device.";
     } else {
-      statusEl.textContent = "
-";
+      statusEl.textContent = "Downloads are currently locked.";
     }
   }
 }

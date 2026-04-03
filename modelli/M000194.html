@@ -58,10 +58,7 @@
   <h2>Notes</h2>
   <p>Hex head screw according to UNI EN 24017.</p>
 </div>
-</div>
-</div>
-</div>
-</div>
+
 <div class="card" id="pta-download-card">
   <h2>Downloads</h2>
   <p>This model page is public, but downloads are protected by your library key.</p>
@@ -69,6 +66,11 @@
     <button class="pta-btn" type="button" onclick="ptaUnlockDownloads('M000194')">Unlock Downloads</button>
     <button class="pta-btn" id="pta-download-btn-M000194" type="button" onclick="ptaDownloadZip('M000194')" disabled>Download ZIP</button>
   </div>
+  <p id="pta-unlock-status-M000194" class="muted">Downloads are currently locked.</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 <div class="footer-note">
@@ -133,11 +135,9 @@ function ptaUpdatePageButtons() {
 
   for (const statusEl of allStatus) {
     if (saved) {
-      statusEl.textContent = "
-";
+      statusEl.textContent = "Downloads unlocked on this device.";
     } else {
-      statusEl.textContent = "
-";
+      statusEl.textContent = "Downloads are currently locked.";
     }
   }
 }
