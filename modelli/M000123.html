@@ -50,8 +50,6 @@
   <h2>Preview</h2>
   <img src='../previews/M000123.png' alt='M000123' style='max-width:520px;width:100%;border:1px solid #ddd;border-radius:12px;background:#fff;'>
 </div>
-
-  <p id="unlockStatus" class="muted">Downloads are currently locked.</p>
 </div>
 
 </div>
@@ -60,15 +58,9 @@
   <h2>Notes</h2>
   <p>Washer according to UNI 6598.</p>
 </div>
-
-  <p id="unlockStatus" class="muted">Downloads are currently locked.</p>
 </div>
-
-  <p id="pta-unlock-status-M000123" class="muted">Downloads are currently locked.</p>
 </div>
-  <p id="pta-unlock-status-M000123" class="muted">Downloads are currently locked.</p>
 </div>
-  <p id="pta-unlock-status" class="muted">Downloads are currently locked.</p>
 </div>
 <div class="card" id="pta-download-card">
   <h2>Downloads</h2>
@@ -77,7 +69,6 @@
     <button class="pta-btn" type="button" onclick="ptaUnlockDownloads('M000123')">Unlock Downloads</button>
     <button class="pta-btn" id="pta-download-btn-M000123" type="button" onclick="ptaDownloadZip('M000123')" disabled>Download ZIP</button>
   </div>
-  <p id="pta-unlock-status-M000123" class="muted">Downloads are currently locked.</p>
 </div>
 
 <div class="footer-note">
@@ -142,9 +133,11 @@ function ptaUpdatePageButtons() {
 
   for (const statusEl of allStatus) {
     if (saved) {
-      statusEl.textContent = "Downloads unlocked on this device.";
+      statusEl.textContent = "
+";
     } else {
-      statusEl.textContent = "Downloads are currently locked.";
+      statusEl.textContent = "
+";
     }
   }
 }

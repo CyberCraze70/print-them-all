@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M000166 - Countersunk flat head cross recess screw ISO 7046 M4x20</title>
+  <link rel="stylesheet" href="../assets/style.css">
+
+<style id="pta-unlock-style">
+.pta-btn{
+  display:inline-block;
+  margin-right:12px;
+  margin-bottom:8px;
+  padding:10px 14px;
+  border-radius:10px;
+  border:1px solid #d1d5db;
+  background:#ffffff;
+  color:#111827;
+  font-size:15px;
+  cursor:pointer;
+}
+.pta-btn:hover{
+  background:#f3f4f6;
+}
+.pta-btn[disabled]{
+  opacity:0.45;
+  cursor:not-allowed;
+}
+</style>
+
+</head>
+<body>
+  <div class="container">
+    <div class="topnav">
+  <a href="../index.html">← Home</a> |
+  <a href="../categorie/bolts.html">Bolts</a> |
+  <a href="../sottocategorie/bolts__iso_7046.html">ISO 7046</a>
+</div>
+
+<div class="card">
+  <h1>M000166</h1>
+  <p>
+    <span class="badge">Category: Bolts</span>
+    <span class="badge">Subcategory: ISO 7046</span>
+  </p>
+  <p><strong>Description:</strong> Countersunk flat head cross recess screw ISO 7046 M4x20</p>
+</div>
+
+<div class="card">
+  <h2>Preview</h2>
+  <img src='../previews/M000166.png' alt='M000166' style='max-width:520px;width:100%;border:1px solid #ddd;border-radius:12px;background:#fff;'>
+</div>
+
+  <p id="unlockStatus" class="muted">Downloads are currently locked.</p>
+</div>
+
+</div>
+
+<div class="card">
+  <h2>Notes</h2>
+  <p>Countersunk flat head screw with cross recess.</p>
+</div>
+
+  <p id="unlockStatus" class="muted">Downloads are currently locked.</p>
+</div>
+
+  <p id="pta-unlock-status-M000166" class="muted">Downloads are currently locked.</p>
+</div>
+  <p id="pta-unlock-status-M000166" class="muted">Downloads are currently locked.</p>
+</div>
+  <p id="pta-unlock-status" class="muted">Downloads are currently locked.</p>
+</div>
+<div class="card" id="pta-download-card">
+  <h2>Downloads</h2>
+  <p>This model page is public, but downloads are protected by your library key.</p>
+  <div class="links-list">
+    <button class="pta-btn" type="button" onclick="ptaUnlockDownloads('M000166')">Unlock Downloads</button>
+    <button class="pta-btn" id="pta-download-btn-M000166" type="button" onclick="ptaDownloadZip('M000166')" disabled>Download ZIP</button>
+  </div>
+  <p id="pta-unlock-status-M000166" class="muted">Downloads are currently locked.</p>
+</div>
+
+<div class="footer-note">
+  Print Them All — static catalog ready for GitHub Pages.
+</div>
+  </div>
+
+<script id="pta-unlock-script">
+const PTA_WORKER_BASE = "https://print-them-all-unlock.crypto-4ea.workers.dev";
+const PTA_STORAGE_KEY = "pta_library_access";
+const PTA_VALID_DAYS = 30;
+
+function ptaGetSavedAccess() {
+  try {
+    const raw = localStorage.getItem(PTA_STORAGE_KEY);
+    if (!raw) return null;
+
+    const data = JSON.parse(raw);
+    if (!data.key || !data.expires_at) return null;
+
+    if (Date.now() > Number(data.expires_at)) {
+      localStorage.removeItem(PTA_STORAGE_KEY);
+      return null;
+    }
+
+    return data;
+  } catch (err) {
+    localStorage.removeItem(PTA_STORAGE_KEY);
+    return null;
+  }
+}
+
+function ptaSaveAccess(key) {
+  const expiresAt = Date.now() + (PTA_VALID_DAYS * 24 * 60 * 60 * 1000);
+  localStorage.setItem(
+    PTA_STORAGE_KEY,
+    JSON.stringify({
+      key: key,
+      expires_at: expiresAt
+    })
+  );
+}
+
+function ptaUpdatePageButtons() {
+  const saved = ptaGetSavedAccess();
+  const allButtons = document.querySelectorAll("[id^='pta-download-btn-']");
+  const allStatus = document.querySelectorAll("[id^='pta-unlock-status-']");
+
+  for (const btn of allButtons) {
+    if (saved) {
+      btn.disabled = false;
+      btn.removeAttribute("disabled");
+      btn.style.opacity = "1";
+      btn.style.cursor = "pointer";
+    } else {
+      btn.disabled = true;
+      btn.setAttribute("disabled", "disabled");
+      btn.style.opacity = "0.45";
+      btn.style.cursor = "not-allowed";
+    }
+  }
+
+  for (const statusEl of allStatus) {
+    if (saved) {
+      statusEl.textContent = "Downloads unlocked on this device.";
+    } else {
+      statusEl.textContent = "Downloads are currently locked.";
+    }
+  }
+}
+
+async function ptaUnlockDownloads(modelName) {
+  const saved = ptaGetSavedAccess();
+  const currentValue = saved ? saved.key : "";
+  const key = prompt("Enter your library key:", currentValue);
+
+  if (key === null) return;
+  if (!key.trim()) {
+    alert("No key entered.");
+    return;
+  }
+
+  try {
+    const response = await fetch(PTA_WORKER_BASE + "/unlock", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ key: key.trim() })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      ptaSaveAccess(key.trim());
+      ptaUpdatePageButtons();
+      alert("Downloads unlocked.");
+    } else {
+      alert("Wrong key.");
+    }
+  } catch (err) {
+    alert("Cannot contact unlock service.");
+    console.error(err);
+  }
+}
+
+function ptaDownloadZip(modelName) {
+  const saved = ptaGetSavedAccess();
+
+  if (!saved || !saved.key) {
+    alert("Please unlock downloads first.");
+    ptaUpdatePageButtons();
+    return;
+  }
+
+  const fileName = modelName + ".zip";
+  const url = PTA_WORKER_BASE
+    + "/download?file="
+    + encodeURIComponent(fileName)
+    + "&key="
+    + encodeURIComponent(saved.key);
+
+  window.location.href = url;
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  ptaUpdatePageButtons();
+});
+</script>
+
+</body>
+</html>
